@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Patient Dashboard - MedTrack</title>
+    <link rel="stylesheet" href="/static/patient_dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Patient Dashboard</h1>
+            <div>
+                <span>Welcome, {{ session.user_name }}</span>
+                <a href="/search/doctors" class="btn btn-primary" style="margin-left: 20px;">Search Doctors</a>
+                <a href="/logout" class="btn btn-primary" style="margin-left: 10px;">Logout</a>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="section">
+            <h2>My Appointments</h2>
+            {% if appointments %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Doctor</th>
+                            <th>Specialization</th>
+                            <th>Symptoms</th>
+                            <th>Status</th>
+                            <th>Prescription</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for apt in appointments %}
+                        <tr>
+                            <td>{{ apt.appointment_date }}</td>
+                            <td>{{ apt.doctor_name }}</td>
+                            <td>{{ apt.specialization }}</td>
+                            <td>{{ apt.symptoms }}</td>
+                            <td class="status-{{ apt.status }}">{{ apt.status|capitalize }}</td>
+                            <td>
+                                {% if apt.prescription %}
+                                    <div class="prescription-box">
+                                        <h4>Prescription:</h4>
+                                        {{ apt.prescription }}
+                                    </div>
+                                {% else %}
+                                    <em>Pending</em>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No appointments yet. <a href="/search/doctors">Search doctors</a> to book an appointment.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

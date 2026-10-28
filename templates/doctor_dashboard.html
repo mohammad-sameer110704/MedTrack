@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Doctor Dashboard - MedTrack</title>
+    <link rel="stylesheet" href="/static/doctor_dashboard.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Doctor Dashboard</h1>
+            <div>
+                <span>Welcome, {{ session.user_name }}</span>
+                <a href="/logout" class="btn btn-primary" style="margin-left: 20px;">Logout</a>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <div class="section">
+            <h2>Pending Appointments</h2>
+            {% if pending_appointments %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Patient Name</th>
+                            <th>Age</th>
+                            <th>Phone</th>
+                            <th>Symptoms</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for apt in pending_appointments %}
+                        <tr>
+                            <td>{{ apt.appointment_date }}</td>
+                            <td>{{ apt.patient_name }}</td>
+                            <td>{{ apt.patient_age }}</td>
+                            <td>{{ apt.patient_phno }}</td>
+                            <td>{{ apt.symptoms }}</td>
+                            <td>
+                                <a href="/add/prescription/{{ apt.id }}" class="btn btn-success">Add Prescription</a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No pending appointments.</p>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h2>Completed Appointments</h2>
+            {% if completed_appointments %}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Patient Name</th>
+                            <th>Age</th>
+                            <th>Phone</th>
+                            <th>Symptoms</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for apt in completed_appointments %}
+                        <tr>
+                            <td>{{ apt.appointment_date }}</td>
+                            <td>{{ apt.patient_name }}</td>
+                            <td>{{ apt.patient_age }}</td>
+                            <td>{{ apt.patient_phno }}</td>
+                            <td>{{ apt.symptoms }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% else %}
+                <p>No completed appointments.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>

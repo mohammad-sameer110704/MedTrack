@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Prescription - MedTrack</title>
+    <link rel="stylesheet" href="/static/add_prescription.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Add Prescription</h1>
+
+        <div class="appointment-info">
+            <h3>Patient: {{ appointment.patient_name }}</h3>
+            <p><strong>Age:</strong> {{ appointment.patient_age }}</p>
+            <p><strong>Phone:</strong> {{ appointment.patient_phno }}</p>
+            <p><strong>Symptoms:</strong> {{ appointment.symptoms }}</p>
+            <p><strong>Appointment Date:</strong> {{ appointment.appointment_date }}</p>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="form-group">
+                <label>Prescription:</label>
+                <textarea name="prescription" required placeholder="Enter prescription details..."></textarea>
+            </div>
+            <button type="submit">Submit Prescription</button>
+        </form>
+
+        <a href="/doctor/dashboard" class="back-link">Back to Dashboard</a>
+    </div>
+</body>
+</html>

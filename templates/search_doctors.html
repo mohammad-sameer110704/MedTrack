@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Search Doctors - MedTrack</title>
+    <link rel="stylesheet" href="/static/search_doctors.css">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Search Doctors</h1>
+            <a href="/patient/dashboard" class="btn btn-primary">Back to Dashboard</a>
+        </div>
+
+        <div class="filter-section">
+            <form method="GET">
+                <label>Filter by Specialization:</label>
+                <select name="specialization">
+                    <option value="">All Specializations</option>
+                    {% for spec in specializations %}
+                        <option value="{{ spec }}" {% if spec == selected_specialization %}selected{% endif %}>{{ spec }}</option>
+                    {% endfor %}
+                </select>
+                <button type="submit" class="btn btn-primary">Filter</button>
+            </form>
+        </div>
+
+        {% if doctors %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Phone</th>
+                        <th>Specialization</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for doctor in doctors %}
+                    <tr>
+                        <td>{{ doctor.name }}</td>
+                        <td>{{ doctor.phno }}</td>
+                        <td>{{ doctor.specialization }}</td>
+                        <td>
+                            <a href="/book/appointment/{{ doctor.id }}" class="btn btn-success">Book Appointment</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No doctors found.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
